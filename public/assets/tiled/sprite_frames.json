@@ -1,0 +1,28 @@
+{
+    "frames": [
+        {
+        	"filename": "tank1",
+        	"frame": {"x":0,"y":0,"w":16,"h":16},
+        	"rotated": false,
+        	"trimmed": true,
+        	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+        	"sourceSize": {"w":16,"h":16}
+        },
+        {
+        	"filename": "tank2",
+        	"frame": {"x":0,"y":128,"w":16,"h":16},
+        	"rotated": false,
+        	"trimmed": true,
+        	"spriteSourceSize": {"x":0,"y":64,"w":16,"h":16},
+        	"sourceSize": {"w":16,"h":16}
+        },
+        {
+        	"filename": "tank3",
+        	"frame": {"x":128,"y":128,"w":16,"h":16},
+        	"rotated": false,
+        	"trimmed": true,
+        	"spriteSourceSize": {"x":0,"y":96,"w":16,"h":16},
+        	"sourceSize": {"w":16,"h":16}
+        }
+    ]
+}
