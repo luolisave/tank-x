@@ -1,0 +1,21 @@
+{
+  "name": "tank-x",
+  "version": "0.0.1",
+  "description": "a tank game",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luolisave/tank-x.git"
+  },
+  "keywords": [],
+  "author": "Li Luo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luolisave/tank-x/issues"
+  },
+  "homepage": "https://github.com/luolisave/tank-x#readme",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
