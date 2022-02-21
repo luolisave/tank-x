@@ -23,15 +23,35 @@
 
     <script src="lib/socket.io/socket.io.js"></script>
     <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+        function getRandomAnonymousName() {
+            return '&' + getRandomInt(99999);
+        }
+    </script>
+    <script>
         var socket = io();
 
         var form = document.getElementById('form');
         var input = document.getElementById('input');
 
+        var personName = localStorage.getItem('personName');
+        if (personName && personName !== '') {
+            personName = prompt("Please enter your name", personName);
+        } else {
+            personName = prompt("Please enter your name", getRandomAnonymousName());
+        }
+        if (personName === '') {
+            personName = getRandomAnonymousName();
+        } else {
+            localStorage.setItem('personName', personName);
+        }
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if (input.value) {
-                socket.emit('chat message', input.value);
+                socket.emit('chat message', personName + ": " + input.value);
                 input.value = '';
             }
         });
