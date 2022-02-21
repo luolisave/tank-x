@@ -1,21 +1,19 @@
 class TankScene extends Phaser.Scene
 {
-    constructor ()
-    {
+    constructor() {
         super();
     }
 
-    preload () 
-    {
-        this.load.image('map', 'assets/images/black_bg.png');
+    preload() {
+        this.load.image('background_image', 'assets/images/black_bg.png');
+        this.load.spritesheet('battle_city_sprites', 'assets/tiled/battle_city.png', {frameWidth: 16, frameHeight: 16, startFrame: 0, endFrame: 400}); //  400 means the png file have 400 (16*16) tiles
         // this.load.image('ship', 'assets/sprites/fmship.png');
     }
 
-    create () 
-    {
+    create() {
         this.cameras.main.setBounds(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     
-        this.add.image(0, 0, 'map').setOrigin(0).setScrollFactor(1);
+        this.add.image(0, 0, 'background_image').setOrigin(0).setScrollFactor(1);
     
         this.cursors = this.input.keyboard.createCursorKeys();
     
@@ -26,53 +24,34 @@ class TankScene extends Phaser.Scene
         // // this.cameras.main.roundPixels = true;
     
         // this.cameras.main.setZoom(4);
+
+        this.tanks = [];
+        this.tanks[0] = this.add.image(8, 8, 'battle_city_sprites', 0);
+        this.tank = this.tanks[0];
+
+        this.counter = 0;
     }
 
-    updateDirect ()
+    updateDirect(time, delta)
     {
-        // if (this.cursors.left.isDown)
-        // {
-        //     this.ship.setAngle(-90);
-        //     this.ship.x -= 2.5;
-        // }
-        // else if (this.cursors.right.isDown)
-        // {
-        //     this.ship.setAngle(90);
-        //     this.ship.x += 2.5;
-        // }
-
-        // if (this.cursors.up.isDown)
-        // {
-        //     this.ship.setAngle(0);
-        //     this.ship.y -= 2.5;
-        // }
-        // else if (this.cursors.down.isDown)
-        // {
-        //     this.ship.setAngle(-180);
-        //     this.ship.y += 2.5;
-        // }
+        var moveSpeed = Math.floor(delta/16.6);
+        if (this.cursors.left.isDown) {
+            this.tank.setAngle(-90);
+            this.tank.x -= moveSpeed;
+        } else if (this.cursors.right.isDown){
+            this.tank.setAngle(90);
+            this.tank.x += moveSpeed;
+        } else if (this.cursors.up.isDown){
+            this.tank.setAngle(0);
+            this.tank.y -= moveSpeed;
+        } else if (this.cursors.down.isDown){
+            this.tank.setAngle(-180);
+            this.tank.y += moveSpeed;
+        }
     }
 
-    update () 
+    update(time, delta) 
     {
-        // this.ship.setVelocity(0);
-
-        // if (this.cursors.left.isDown)
-        // {
-        //     this.ship.setAngle(-90).setVelocityX(-200);
-        // }
-        // else if (this.cursors.right.isDown)
-        // {
-        //     this.ship.setAngle(90).setVelocityX(200);
-        // }
-    
-        // if (this.cursors.up.isDown)
-        // {
-        //     this.ship.setAngle(0).setVelocityY(-200);
-        // }
-        // else if (this.cursors.down.isDown)
-        // {
-        //     this.ship.setAngle(-180).setVelocityY(200);
-        // }
+        this.updateDirect(time, delta);
     }
 }
