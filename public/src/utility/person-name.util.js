@@ -13,7 +13,7 @@ function promptPersonName() {
     } else {
         personName = prompt("Please enter your name", getRandomAnonymousName());
     }
-    if (personName === '') {
+    if (!personName || personName === '') {
         personName = getRandomAnonymousName();
     } else {
         localStorage.setItem('personName', personName);
