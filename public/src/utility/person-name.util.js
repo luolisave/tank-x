@@ -3,7 +3,7 @@ function getRandomInt(max) {
 }
 
 function getRandomAnonymousName() {
-    return '&' + getRandomInt(99999);
+    return '#' + getRandomInt(99999);
 }
 
 function promptPersonName() {
@@ -13,8 +13,14 @@ function promptPersonName() {
     } else {
         personName = prompt("Please enter your name", getRandomAnonymousName());
     }
-    if (!personName || personName === '') {
+    if (personName === '') {
         personName = getRandomAnonymousName();
+        localStorage.setItem('personName', personName);
+    } else if (!personName) { // cancel button clicked
+        if(!localStorage.getItem('personName')){
+            personName = getRandomAnonymousName();
+            localStorage.setItem('personName', personName);
+        }
     } else {
         localStorage.setItem('personName', personName);
     }
