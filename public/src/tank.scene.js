@@ -17,7 +17,7 @@ class TankScene extends Phaser.Scene
     
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.INSERT);
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     
         // this.ship = this.physics.add.image(400.5, 301.3, 'ship');
         // // ship = this.add.image(400.5, 301.3, 'ship');
@@ -57,11 +57,17 @@ class TankScene extends Phaser.Scene
     {
         this.updateDirect(time, delta);
 
+        // chat enter space fix. bad fix for input not able to enter space
         if (this.keySpace.isDown) {
             input.focus();
-            // messages.style.background = 'rgba(127,255,212,0.3)';
-            // messagesContainer.classList.remove("chat_off");
-            // messagesContainer.classList.add("chat_on");
+            if(!this.spaceAdded) {
+                input.value = input.value + ' ';
+            }
+            this.spaceAdded = true;
         }
+        if (this.keySpace.isUp) {
+            this.spaceAdded = false;
+        }
+        // chat enter space fix ends
     }
 }

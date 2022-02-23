@@ -44,8 +44,10 @@
         <div id="messages_container" class="chat_off">
             <ul id="messages"></ul>
             <form id="form" action="#" style="position: absolute; bottom: 16px; left: 8px; width: 600px">
-                <input id="input" autocomplete="off" style="padding: 0 1rem; border-radius: 1rem; margin: 0.25rem;" />
+                <input id="input" autocomplete="off" style="padding: 0 1rem; border-radius: 1rem; margin: 0.25rem; width: 350px;" />
                 <button>Send</button>
+                <span style="padding-left:50px;"></span>
+                <button id="close_chat_btn"> [x] Close Chat </button>
             </form>
         </div>
 
@@ -61,6 +63,12 @@
             var input = document.getElementById('input');
             var messagesContainer = document.getElementById('messages_container');
             var messages = document.getElementById('messages');
+            var closeChatBtn = document.getElementById('close_chat_btn');
+
+            closeChatBtn.addEventListener('click', (event) => {
+                messagesContainer.classList.remove("chat_on");
+                messagesContainer.classList.add("chat_off");
+            });
 
             input.addEventListener('focus', (event) => {
                 messages.style.background = 'rgba(127,255,212,0.3)';
@@ -68,13 +76,13 @@
                 messagesContainer.classList.add("chat_on");
             });
 
-            input.addEventListener('blur', (event) => {
-                messages.style.background = 'rgba(127,255,212,0.1)';
-                setTimeout(()=>{
-                    messagesContainer.classList.remove("chat_on");
-                    messagesContainer.classList.add("chat_off");
-                }, 10000);
-            });
+            // input.addEventListener('blur', (event) => {
+            //     messages.style.background = 'rgba(127,255,212,0.1)';
+            //     setTimeout(()=>{
+            //         messagesContainer.classList.remove("chat_on");
+            //         messagesContainer.classList.add("chat_off");
+            //     }, 10000);
+            // });
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
