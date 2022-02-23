@@ -70,6 +70,24 @@
                 messagesContainer.classList.add("chat_off");
             });
 
+            // fix inside input box, space key not able to enter space issue (phaser 3 preventDefault)
+            spaceAdded = false;
+            input.addEventListener('keydown', (event)=>{
+                if (event.code === 'Space') {
+                    if(!this.spaceAdded) {
+                        input.value = input.value + ' ';
+                    }
+                    this.spaceAdded = true;
+                }
+            });
+            input.addEventListener('keyup', (event)=>{
+                if (event.code === 'Space') {
+                    spaceAdded = false;
+                }
+            });
+
+            
+
             input.addEventListener('focus', (event) => {
                 messages.style.background = 'rgba(127,255,212,0.3)';
                 messagesContainer.classList.remove("chat_off");

@@ -60,14 +60,6 @@ class TankScene extends Phaser.Scene
         // chat enter space fix. bad fix for input not able to enter space
         if (this.keySpace.isDown) {
             input.focus();
-            if(!this.spaceAdded) {
-                input.value = input.value + ' ';
-            }
-            this.spaceAdded = true;
         }
-        if (this.keySpace.isUp) {
-            this.spaceAdded = false;
-        }
-        // chat enter space fix ends
     }
 }
