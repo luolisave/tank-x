@@ -27,8 +27,12 @@
 
         <link rel="stylesheet" href="css/styles_tank.css">
 
-        <style>* { padding: 0; margin: 0; }</style>
+        <style>
+            * { padding: 0; margin: 0; }
+        </style>
         <script src="lib/phaser-3.55/phaser.min.js"></script>
+        <script src="lib/socket.io/socket.io.js"></script>
+        <script src="src/utility/person-name.util.js"></script>
 
         <script src="src/tank.scene.js"></script>
     </head>
@@ -37,6 +41,62 @@
         <div id="gamediv" style="height: 100vh;">
 
         </div>
+        <div id="messages_container" class="chat_off">
+            <ul id="messages"></ul>
+            <form id="form" action="#" style="position: absolute; bottom: 16px; left: 8px; width: 600px">
+                <input id="input" autocomplete="off" style="padding: 0 1rem; border-radius: 1rem; margin: 0.25rem;" />
+                <button>Send</button>
+            </form>
+        </div>
+
+        <!-- global -->
+        <script>
+            var socket = io();
+            var personName = promptPersonName();
+        </script>
+
+        <!-- script for chat -->
+        <script>
+            var form = document.getElementById('form');
+            var input = document.getElementById('input');
+            var messagesContainer = document.getElementById('messages_container');
+            var messages = document.getElementById('messages');
+
+            input.addEventListener('focus', (event) => {
+                messages.style.background = 'rgba(127,255,212,0.3)';
+                messagesContainer.classList.remove("chat_off");
+                messagesContainer.classList.add("chat_on");
+            });
+
+            input.addEventListener('blur', (event) => {
+                messages.style.background = 'rgba(127,255,212,0.1)';
+                setTimeout(()=>{
+                    messagesContainer.classList.remove("chat_on");
+                    messagesContainer.classList.add("chat_off");
+                }, 10000);
+            });
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (input.value) {
+                    if (personName === 'root') {
+                        alert('TODO: root user command go here.');
+                    } else {
+                        socket.emit('chat message', personName + ": " + input.value);
+                        input.value = '';
+                    }
+                }
+            });
+
+            socket.on('chat message', function(msg) {
+                var item = document.createElement('li');
+                item.textContent = msg;
+                messages.appendChild(item);
+                messages.scrollTo(0, messages.scrollHeight);
+            });
+        </script>
+
+        <!-- phaser 3 configuration -->
         <script>
             // import TankScene from 'src/tank.scene.js';
             var SCREEN_WIDTH = 1280;

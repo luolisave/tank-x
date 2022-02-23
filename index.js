@@ -15,13 +15,18 @@ app.get('/hello', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('a user connected. socket.id = ', socket.id);
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  // socket.on('chat message', (msg) => {
-  //   console.log('message: ' + msg);
-  // });
+
+  // game play
+  socket.on('gameplay', (msgObj) => {
+    // io.emit('gameplay', msgObj);
+    console.log('  -> server received = ', msgObj);
+  });
+
+  // broadcast to all connected sockets
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });

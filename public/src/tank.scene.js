@@ -16,6 +16,8 @@ class TankScene extends Phaser.Scene
         this.add.image(0, 0, 'background_image').setOrigin(0).setScrollFactor(1);
     
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.INSERT);
     
         // this.ship = this.physics.add.image(400.5, 301.3, 'ship');
         // // ship = this.add.image(400.5, 301.3, 'ship');
@@ -34,7 +36,8 @@ class TankScene extends Phaser.Scene
 
     updateDirect(time, delta)
     {
-        var moveSpeed = Math.floor(delta/16.6);
+        var MS_PER_FRAME_60FPS = 16.6667;
+        var moveSpeed = 1 * (delta / MS_PER_FRAME_60FPS); // !!! delta can change due to monitor refresh rate!!!
         if (this.cursors.left.isDown) {
             this.tank.setAngle(-90);
             this.tank.x -= moveSpeed;
@@ -53,5 +56,12 @@ class TankScene extends Phaser.Scene
     update(time, delta) 
     {
         this.updateDirect(time, delta);
+
+        if (this.keySpace.isDown) {
+            input.focus();
+            // messages.style.background = 'rgba(127,255,212,0.3)';
+            // messagesContainer.classList.remove("chat_off");
+            // messagesContainer.classList.add("chat_on");
+        }
     }
 }

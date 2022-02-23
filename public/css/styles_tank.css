@@ -2,3 +2,35 @@ body {
     background-image: url(/assets/images/tank_bg_for_body.jpg);
     background-color: #cccccc;
 }
+
+#messages_container.chat_on {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    min-width: 1000%;
+}
+
+#messages_container.chat_off {
+    position: fixed;
+    height: 1px;
+    width: 1px;
+    top: -100px;
+    left: -100px;
+}
+
+#messages {
+    position: absolute;
+    height: 50vh;
+    bottom: 48px;
+    width:700px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    margin-left: 16px;
+    list-style: none;
+    /* background-color: rgba(127,255,212,0.3); */
+}
+#messages li {
+    padding-left: 8px;
+}
