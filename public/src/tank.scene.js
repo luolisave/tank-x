@@ -29,7 +29,7 @@ class TankScene extends Phaser.Scene
 
         this.tanks = [];
         this.tanks[0] = this.add.image(8, 8, 'battle_city_sprites', 0);
-        this.tank = this.tanks[0];
+        this.myTank = this.tanks[0];
 
         this.counter = 0;
     }
@@ -39,31 +39,43 @@ class TankScene extends Phaser.Scene
         var MS_PER_FRAME_60FPS = 16.6667;
         var moveSpeed = 1 * (delta / MS_PER_FRAME_60FPS); // !!! delta can change due to monitor refresh rate!!!
         
+        var keyboardPress = {
+            leftIsDown: false,
+            rightIsDown: false,
+            upIsDown: false,
+            downIsDown: false
+        };
+
         // user control
         if (this.cursors.left.isDown) {
-            this.tank.setAngle(-90);
-            this.tank.x -= moveSpeed;
+            this.myTank.setAngle(-90);
+            this.myTank.x -= moveSpeed;
+            keyboardPress.leftIsDown = true;
         } else if (this.cursors.right.isDown){
-            this.tank.setAngle(90);
-            this.tank.x += moveSpeed;
+            this.myTank.setAngle(90);
+            this.myTank.x += moveSpeed;
+            keyboardPress.rightIsDown = true;
         } else if (this.cursors.up.isDown){
-            this.tank.setAngle(0);
-            this.tank.y -= moveSpeed;
+            this.myTank.setAngle(0);
+            this.myTank.y -= moveSpeed;
+            keyboardPress.upIsDown = true;
         } else if (this.cursors.down.isDown){
-            this.tank.setAngle(-180);
-            this.tank.y += moveSpeed;
+            this.myTank.setAngle(-180);
+            this.myTank.y += moveSpeed;
+            keyboardPress.downIsDown = true;
         }
+        socket.emit('gameplay', {keyboardPress});
 
         // boundary guard
-        if (this.tank.x < 8) {
-            this.tank.x = 8;
-        } else if (this.tank.x > SCREEN_WIDTH - 8) {
-            this.tank.x = SCREEN_WIDTH - 8;
+        if (this.myTank.x < 8) {
+            this.myTank.x = 8;
+        } else if (this.myTank.x > SCREEN_WIDTH - 8) {
+            this.myTank.x = SCREEN_WIDTH - 8;
         }
-        if (this.tank.y < 8) {
-            this.tank.y = 8;
-        } else if (this.tank.y > SCREEN_HEIGHT - 8) {
-            this.tank.y = SCREEN_HEIGHT - 8;
+        if (this.myTank.y < 8) {
+            this.myTank.y = 8;
+        } else if (this.myTank.y > SCREEN_HEIGHT - 8) {
+            this.myTank.y = SCREEN_HEIGHT - 8;
         }
         // boundary guard ends
     }
@@ -71,6 +83,8 @@ class TankScene extends Phaser.Scene
     update(time, delta) 
     {
         this.updateDirect(time, delta);
+
+        console.log(' update() tanksObjFromServerSide = ', tanksObjFromServerSide);
 
         // chat enter space fix. bad fix for input not able to enter space
         if (this.keySpace.isDown) {

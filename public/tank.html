@@ -57,6 +57,23 @@
             var personName = promptPersonName();
         </script>
 
+        <!-- game socket initial -->
+        <script>
+            socket.emit('player user name', {personName});
+
+            var tanksObjFromServerSide = [];
+            socket.on('gameplay', (msg) => {
+                if(msg && msg.status > 0) {
+                    tanksObjFromServerSide = msg.tanks;
+                } else if(msg && msg.info) {
+                    console.log(`socket 'gameplay' message from server error out: `,  msg.info);
+                } else {
+                    console.log(`socket 'gameplay' message from server error out: `);
+                }
+                console.log(' gameplay msg = ', msg, '  tanksObjFromServerSide = ', tanksObjFromServerSide);
+            });
+        </script>
+
         <!-- script for chat -->
         <script>
             var form = document.getElementById('form');
@@ -85,8 +102,6 @@
                     spaceAdded = false;
                 }
             });
-
-            
 
             input.addEventListener('focus', (event) => {
                 messages.style.background = 'rgba(127,255,212,0.3)';

@@ -8,6 +8,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+var tanks = [];
+
 app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.get('/hello', (req, res) => {
@@ -15,20 +17,52 @@ app.get('/hello', (req, res) => {
 })
 
 io.on('connection', (socket) => {
+  var personName = '';
   console.log('a user connected. socket.id = ', socket.id);
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+
+  
+
+  // initial newlly connected player.
+  socket.on('player user name', (msgObj) => {
+    if (msgObj.personName) {
+      personName = msgObj.personName;
+      tanks.push({
+        id: socket.id,
+        personName: msgObj.personName,
+        x: 8 + 64 * tanks.length, // TODO: 
+        y: 500, // TODO: 
+        angle: 90 // TODO: 
+      });
+      io.emit('gameplay', {
+        status: 1,
+        info: 'success',
+        tanks: tanks
+      });
+    }
   });
 
-  // game play
-  socket.on('gameplay', (msgObj) => {
-    // io.emit('gameplay', msgObj);
-    console.log('  -> server received = ', msgObj);
+  // game play logic
+  socket.on('gameplay', (keyPress) => {
+    // console.log('  -> received keyPress = ', keyPress);
+    // TODO: Create logic
   });
+
+  
 
   // broadcast to all connected sockets
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
+  });
+
+
+  // disconnect
+  socket.on('disconnect', () => {
+    console.log(`user ${personName} (id = ${socket.id}) disconnected`);
+    for (var i = 0; i < tanks.length; i++) {
+      if(tanks[i].id === socket.id) {
+        tanks.splice(i, 1);
+      }
+    }
   });
 });
 
