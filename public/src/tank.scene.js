@@ -38,6 +38,8 @@ class TankScene extends Phaser.Scene
     {
         var MS_PER_FRAME_60FPS = 16.6667;
         var moveSpeed = 1 * (delta / MS_PER_FRAME_60FPS); // !!! delta can change due to monitor refresh rate!!!
+        
+        // user control
         if (this.cursors.left.isDown) {
             this.tank.setAngle(-90);
             this.tank.x -= moveSpeed;
@@ -51,6 +53,19 @@ class TankScene extends Phaser.Scene
             this.tank.setAngle(-180);
             this.tank.y += moveSpeed;
         }
+
+        // boundary guard
+        if (this.tank.x < 8) {
+            this.tank.x = 8;
+        } else if (this.tank.x > SCREEN_WIDTH - 8) {
+            this.tank.x = SCREEN_WIDTH - 8;
+        }
+        if (this.tank.y < 8) {
+            this.tank.y = 8;
+        } else if (this.tank.y > SCREEN_HEIGHT - 8) {
+            this.tank.y = SCREEN_HEIGHT - 8;
+        }
+        // boundary guard ends
     }
 
     update(time, delta) 
