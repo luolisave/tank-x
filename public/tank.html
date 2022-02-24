@@ -55,6 +55,11 @@
         <script>
             var socket = io();
             var personName = promptPersonName();
+            var socketId;
+
+            socket.on('connect', function() {
+                socketId = socket.id;
+            });
         </script>
 
         <!-- game socket initial -->
@@ -70,7 +75,13 @@
                 } else {
                     console.log(`socket 'gameplay' message from server error out: `);
                 }
-                console.log(' gameplay msg = ', msg, '  tanksObjFromServerSide = ', tanksObjFromServerSide);
+                if (
+                    tanksObjFromServerSide &&
+                    tanksObjFromServerSide[0] &&
+                    tanksObjFromServerSide[0].keyboardPress
+                ) {
+                    // console.log('222 tanksObjFromServerSide[0] = ', tanksObjFromServerSide[0]);
+                }
             });
         </script>
 

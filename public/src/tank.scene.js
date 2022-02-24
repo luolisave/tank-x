@@ -48,43 +48,52 @@ class TankScene extends Phaser.Scene
 
         // user control
         if (this.cursors.left.isDown) {
-            this.myTank.setAngle(-90);
-            this.myTank.x -= moveSpeed;
+            // this.myTank.setAngle(-90);
+            // this.myTank.x -= moveSpeed;
             keyboardPress.leftIsDown = true;
         } else if (this.cursors.right.isDown){
-            this.myTank.setAngle(90);
-            this.myTank.x += moveSpeed;
+            // this.myTank.setAngle(90);
+            // this.myTank.x += moveSpeed;
             keyboardPress.rightIsDown = true;
         } else if (this.cursors.up.isDown){
-            this.myTank.setAngle(0);
-            this.myTank.y -= moveSpeed;
+            // this.myTank.setAngle(0);
+            // this.myTank.y -= moveSpeed;
             keyboardPress.upIsDown = true;
         } else if (this.cursors.down.isDown){
-            this.myTank.setAngle(-180);
-            this.myTank.y += moveSpeed;
+            // this.myTank.setAngle(-180);
+            // this.myTank.y += moveSpeed;
             keyboardPress.downIsDown = true;
         }
         socket.emit('gameplay', {keyboardPress});
 
-        // boundary guard
-        if (this.myTank.x < 8) {
-            this.myTank.x = 8;
-        } else if (this.myTank.x > SCREEN_WIDTH - 8) {
-            this.myTank.x = SCREEN_WIDTH - 8;
-        }
-        if (this.myTank.y < 8) {
-            this.myTank.y = 8;
-        } else if (this.myTank.y > SCREEN_HEIGHT - 8) {
-            this.myTank.y = SCREEN_HEIGHT - 8;
-        }
-        // boundary guard ends
+        // // boundary guard
+        // if (this.myTank.x < 8) {
+        //     this.myTank.x = 8;
+        // } else if (this.myTank.x > SCREEN_WIDTH - 8) {
+        //     this.myTank.x = SCREEN_WIDTH - 8;
+        // }
+        // if (this.myTank.y < 8) {
+        //     this.myTank.y = 8;
+        // } else if (this.myTank.y > SCREEN_HEIGHT - 8) {
+        //     this.myTank.y = SCREEN_HEIGHT - 8;
+        // }
+        // // boundary guard ends
     }
 
     update(time, delta) 
     {
         this.updateDirect(time, delta);
 
-        console.log(' update() tanksObjFromServerSide = ', tanksObjFromServerSide);
+        if(socketId && socketId !== '' ){
+            for (var i = 0; i < tanksObjFromServerSide.length; i++) {
+                if(tanksObjFromServerSide[i].id === socketId) {
+                    this.myTank.x = tanksObjFromServerSide[i].x;
+                    this.myTank.y = tanksObjFromServerSide[i].y;
+                    this.myTank.angle = tanksObjFromServerSide[i].angle;
+                }
+            }
+        }
+        
 
         // chat enter space fix. bad fix for input not able to enter space
         if (this.keySpace.isDown) {
