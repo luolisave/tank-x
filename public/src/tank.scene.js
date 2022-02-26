@@ -28,8 +28,11 @@ class TankScene extends Phaser.Scene
         // this.cameras.main.setZoom(4);
 
         this.tanks = [];
-        this.tanks[0] = this.add.image(8, 8, 'battle_city_sprites', 0);
-        this.myTank = this.tanks[0];
+        this.myTank = this.add.image(8, 8, 'battle_city_sprites', 0);;
+
+        for (var i = 0; i < 40; i++) { // max 40 tanks/players + current user = 41 players
+            this.tanks[i] = this.add.image(8, 8, 'battle_city_sprites', 8);
+        }
 
         this.counter = 0;
     }
@@ -48,41 +51,29 @@ class TankScene extends Phaser.Scene
 
         // user control
         if (this.cursors.left.isDown) {
-            // this.myTank.setAngle(-90);
-            // this.myTank.x -= moveSpeed;
             keyboardPress.leftIsDown = true;
         } else if (this.cursors.right.isDown){
-            // this.myTank.setAngle(90);
-            // this.myTank.x += moveSpeed;
             keyboardPress.rightIsDown = true;
         } else if (this.cursors.up.isDown){
-            // this.myTank.setAngle(0);
-            // this.myTank.y -= moveSpeed;
             keyboardPress.upIsDown = true;
         } else if (this.cursors.down.isDown){
-            // this.myTank.setAngle(-180);
-            // this.myTank.y += moveSpeed;
             keyboardPress.downIsDown = true;
         }
         socket.emit('gameplay', {keyboardPress});
 
-        // // boundary guard
-        // if (this.myTank.x < 8) {
-        //     this.myTank.x = 8;
-        // } else if (this.myTank.x > SCREEN_WIDTH - 8) {
-        //     this.myTank.x = SCREEN_WIDTH - 8;
-        // }
-        // if (this.myTank.y < 8) {
-        //     this.myTank.y = 8;
-        // } else if (this.myTank.y > SCREEN_HEIGHT - 8) {
-        //     this.myTank.y = SCREEN_HEIGHT - 8;
-        // }
-        // // boundary guard ends
     }
 
     update(time, delta) 
     {
         this.updateDirect(time, delta);
+
+        for (var i = 0; i < this.tanks.length; i++) {
+            this.tanks[i].x = -128;
+            this.tanks[i].y = -128;
+            this.tanks[i].angle = 0;
+        }
+
+        this.tanks[1].x = 99;
 
         if(socketId && socketId !== '' ){
             for (var i = 0; i < tanksObjFromServerSide.length; i++) {
@@ -90,6 +81,10 @@ class TankScene extends Phaser.Scene
                     this.myTank.x = tanksObjFromServerSide[i].x;
                     this.myTank.y = tanksObjFromServerSide[i].y;
                     this.myTank.angle = tanksObjFromServerSide[i].angle;
+                } else {
+                    this.tanks[i].x = tanksObjFromServerSide[i].x;
+                    this.tanks[i].y = tanksObjFromServerSide[i].y;
+                    this.tanks[i].angle = tanksObjFromServerSide[i].angle;
                 }
             }
         }

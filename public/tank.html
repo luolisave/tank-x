@@ -59,6 +59,11 @@
 
             socket.on('connect', function() {
                 socketId = socket.id;
+                socket.on("connect_error", () => {
+                    socket.disconnect();
+                    alert('server error! please refresh page/try again.');
+                    /// location.reload();
+                });
             });
         </script>
 
@@ -146,6 +151,8 @@
                 messages.appendChild(item);
                 messages.scrollTo(0, messages.scrollHeight);
             });
+
+            
         </script>
 
         <!-- phaser 3 configuration -->

@@ -8,6 +8,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const collisionDetection = require('./src/collision.util');
+const playerVelocity = 1;
 var tanks = [];
 
 app.use('/', express.static(path.join(__dirname, 'public')))
@@ -58,18 +60,33 @@ io.on('connection', (socket) => {
       if(tanks[i].id === socket.id) {
         if(tanks[i].keyboardPress) {
           if (tanks[i].keyboardPress.upIsDown) {
-            tanks[i].y = tanks[i].y - 1;
             tanks[i].angle = 0;
+            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity,  tanks)) {
+              tanks[i].y = tanks[i].y - playerVelocity;
+            }
           } else if (tanks[i].keyboardPress.downIsDown) {
-            tanks[i].y = tanks[i].y + 1;
             tanks[i].angle = -180;
+            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
+              tanks[i].y = tanks[i].y + playerVelocity;
+            }
           } else if (tanks[i].keyboardPress.leftIsDown) {
-            tanks[i].x = tanks[i].x - 1;
             tanks[i].angle = -90;
+            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
+              tanks[i].x = tanks[i].x - playerVelocity;
+            }
           } else if (tanks[i].keyboardPress.rightIsDown) {
-            tanks[i].x = tanks[i].x +1;
             tanks[i].angle = 90;
+            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
+              tanks[i].x = tanks[i].x + playerVelocity;
+            }
           }
+
+          // stop tank run outside screen (1280 * 720 resolution)
+          if (tanks[i].x < 8) tanks[i].x = 8;
+          if (tanks[i].x > 1280 - 8 ) tanks[i].x = 1280 - 8;
+          if (tanks[i].y < 8) tanks[i].y = 8;
+          if (tanks[i].y > 720 - 8 ) tanks[i].y = 720 - 8;
+
         }
       }
     }
@@ -77,8 +94,8 @@ io.on('connection', (socket) => {
       status: 1,
       info: 'success',
       tanks: tanks
-    });
-  }, 10);
+    }); 
+  }, 10); 
   
 
   // broadcast to all connected sockets
