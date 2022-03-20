@@ -4,10 +4,14 @@ module.exports = {
 
         // console.log('TODO: detect collistion.', socketId, ' playerIndex =', playerIndex);
         // this.checkTankAgainstTank();
-        return true;
+        return false;
     },
-    checkTankAgainstTank: function () {
-        // whatever
-        console.log('TODO: checkTankAgainstTank()');
+    checkTankAgainstBullets: function () {
+        // TODO: checkTankAgainstBullets()
+        return false;
+    },
+    checkTankAgainstTank: function (socketId, playerIndex, playerAngle, playerVelocity, tanks) {
+        // TODO: checkTankAgainstTank()
+        return false;
     }
 };

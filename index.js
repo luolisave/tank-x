@@ -97,22 +97,22 @@ io.on('connection', (socket) => {
           // Drive direction
           if (tanks[i].keyboardPress.upIsDown) {
             tanks[i].angle = 0;
-            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity,  tanks)) {
+            if(!collisionDetection.checkTankAgainstTank(socket.id, i, tanks[i].angle, playerVelocity,  tanks)) {
               tanks[i].y = tanks[i].y - playerVelocity;
             }
           } else if (tanks[i].keyboardPress.downIsDown) {
             tanks[i].angle = -180;
-            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
+            if(!collisionDetection.checkTankAgainstTank(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
               tanks[i].y = tanks[i].y + playerVelocity;
             }
           } else if (tanks[i].keyboardPress.leftIsDown) {
             tanks[i].angle = -90;
-            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
+            if(!collisionDetection.checkTankAgainstTank(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
               tanks[i].x = tanks[i].x - playerVelocity;
             }
           } else if (tanks[i].keyboardPress.rightIsDown) {
             tanks[i].angle = 90;
-            if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
+            if(!collisionDetection.checkTankAgainstTank(socket.id, i, tanks[i].angle, playerVelocity, tanks)) {
               tanks[i].x = tanks[i].x + playerVelocity;
             }
           }
