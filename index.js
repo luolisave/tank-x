@@ -10,6 +10,7 @@ const io = new Server(server);
 
 const collisionDetection = require('./src/collision.util');
 const playerVelocity = 1;
+const bulletVelocity = 2;
 var tanks = [];
 
 app.use('/', express.static(path.join(__dirname, 'public')))
@@ -33,7 +34,8 @@ io.on('connection', (socket) => {
         personName: msgObj.personName,
         x: 8 + 64 * tanks.length, // TODO: 
         y: 500, // TODO: 
-        angle: 90 // TODO: 
+        angle: 90, // TODO: 
+        bullets: []
       });
       io.emit('gameplay', {
         status: 1,
@@ -66,8 +68,33 @@ io.on('connection', (socket) => {
 
 
     for (var i = 0; i < tanks.length; i++) {
-      if(tanks[i].id === socket.id) {
+      if(tanks[i].id === socket.id) { // find user tank by socket id
         if(tanks[i].keyboardPress) {
+
+          // Fire bullets TODO: check time
+          if (tanks[i].keyboardPress.ctrlIsDown) {
+            if (!tanks[i].bullets) {tanks[i].bullets = [];}
+            // fire once per second
+            if (
+                tanks[i].bullets.length === 0 ||
+                (
+                  tanks[i].bullets[tanks[i].bullets.length-1] &&
+                  thisTime - tanks[i].bullets[tanks[i].bullets.length-1].timeOfFire > 1000
+                )
+            ) {
+              console.log(' fire ', tanks[i].bullets.length + 1 , ' times.');
+              // TODO: 1. move bullets, 2. collision detection, explition, kill count.
+              tanks[i].bullets.push({
+                timeOfFire: thisTime,
+                x: tanks[i].x,
+                y: tanks[i].y,
+                angle: tanks[i].angle,
+              });
+            }
+            
+          }
+
+          // Drive direction
           if (tanks[i].keyboardPress.upIsDown) {
             tanks[i].angle = 0;
             if(collisionDetection.check(socket.id, i, tanks[i].angle, playerVelocity,  tanks)) {
@@ -89,6 +116,8 @@ io.on('connection', (socket) => {
               tanks[i].x = tanks[i].x + playerVelocity;
             }
           }
+
+          
 
           // stop tank run outside screen (1280 * 720 resolution)
           if (tanks[i].x < 8) tanks[i].x = 8;

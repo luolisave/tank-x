@@ -17,7 +17,9 @@ class TankScene extends Phaser.Scene
     
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        // list of key code : https://github.com/photonstorm/phaser/blob/v3.54.0/src/input/keyboard/keys/KeyCodes.js
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.keyCtrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
     
         // this.ship = this.physics.add.image(400.5, 301.3, 'ship');
         // // ship = this.add.image(400.5, 301.3, 'ship');
@@ -28,7 +30,7 @@ class TankScene extends Phaser.Scene
         // this.cameras.main.setZoom(4);
 
         this.tanks = [];
-        this.myTank = this.add.image(8, 8, 'battle_city_sprites', 0);;
+        this.myTank = this.add.image(8, 8, 'battle_city_sprites', 0);
 
         for (var i = 0; i < 40; i++) { // max 40 tanks/players + current user = 41 players
             this.tanks[i] = this.add.image(8, 8, 'battle_city_sprites', 8);
@@ -46,7 +48,8 @@ class TankScene extends Phaser.Scene
             leftIsDown: false,
             rightIsDown: false,
             upIsDown: false,
-            downIsDown: false
+            downIsDown: false,
+            ctrlIsDown: false,
         };
 
         // user control
@@ -59,6 +62,11 @@ class TankScene extends Phaser.Scene
         } else if (this.cursors.down.isDown){
             keyboardPress.downIsDown = true;
         }
+
+        if (this.keyCtrl.isDown) {
+            keyboardPress.ctrlIsDown = true;
+        }
+
         socket.emit('gameplay', {keyboardPress});
 
     }
@@ -94,5 +102,6 @@ class TankScene extends Phaser.Scene
         if (this.keySpace.isDown) {
             input.focus();
         }
+        // console.log('afdsa');
     }
 }
