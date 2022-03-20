@@ -55,7 +55,16 @@ io.on('connection', (socket) => {
     }
   });
   // b. push object position to client
+  var lastTime = new Date(); // test: check time spend inside Interval
   var intervalid = setInterval(() => {
+    // test: check time spend inside Interval ===============>
+    var thisTime = new Date();
+    var timeDelta = thisTime-lastTime;
+    /// console.log("The average interval was "+timeDelta+" milliseconds");
+    lastTime = thisTime;
+    // end check <=================================
+
+
     for (var i = 0; i < tanks.length; i++) {
       if(tanks[i].id === socket.id) {
         if(tanks[i].keyboardPress) {
@@ -95,7 +104,7 @@ io.on('connection', (socket) => {
       info: 'success',
       tanks: tanks
     }); 
-  }, 10); 
+  }, 8); 
   
 
   // broadcast to all connected sockets
