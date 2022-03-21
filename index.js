@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
   });
   // b. push object position to client
   var lastTime = new Date(); // test: check time spend inside Interval
-  var intervalid = setInterval(() => {
+  var interval_ID = setInterval(() => {
     // test: check time spend inside Interval ===============>
     var thisTime = new Date();
     var timeDelta = thisTime-lastTime;
@@ -152,6 +152,9 @@ io.on('connection', (socket) => {
       if(tanks[i].id === socket.id) {
         tanks.splice(i, 1);
       }
+    }
+    if(interval_ID) {
+      clearInterval(interval_ID);
     }
   });
 });
