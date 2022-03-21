@@ -1,5 +1,12 @@
+/*
+ *
+ * Tank-x by Li
+ *
+*/
+
 class TankScene extends Phaser.Scene
 {
+    // phaser 3 samples: https://phaser.io/examples/v3/category/input
     constructor() {
         super();
     }
@@ -17,7 +24,8 @@ class TankScene extends Phaser.Scene
     
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        // list of key code : https://github.com/photonstorm/phaser/blob/v3.54.0/src/input/keyboard/keys/KeyCodes.js
+        // list of key code : 
+        ///  https://github.com/photonstorm/phaser/blob/v3.54.0/src/input/keyboard/keys/KeyCodes.js
         this.keyTab = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.keyCtrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
