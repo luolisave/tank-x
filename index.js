@@ -19,6 +19,7 @@ app.get('/hello', (req, res) => {
   res.send('Hello World!')
 })
 
+// socket connection start ===================================================>>>
 io.on('connection', (socket) => {
   var personName = '';
   console.log('a user connected. socket.id = ', socket.id);
@@ -128,16 +129,18 @@ io.on('connection', (socket) => {
         }
       }
     }
-    io.emit('gameplay', {
+
+    
+    socket.emit('gameplay', { // socket.emit send to current client, io.emit send to all clients, socket.broadcast.emit send to all listeners except the sender
       status: 1,
       info: 'success',
       tanks: tanks
-    }); 
+    });
   }, 8); 
   
 
   // broadcast to all connected sockets
-  socket.on('chat message', (msg) => {
+  socket.on('chat message', (msg) => { // socket.emit send to current client, io.emit send to all clients, socket.broadcast.emit send to all listeners except the sender
     io.emit('chat message', msg);
   });
 
@@ -152,7 +155,7 @@ io.on('connection', (socket) => {
     }
   });
 });
-
+// socket connection end <<<<===================================================
 
 /* 
 app.listen(port, () => {
