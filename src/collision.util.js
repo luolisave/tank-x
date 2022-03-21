@@ -1,8 +1,8 @@
 module.exports = {
-    check: function (socketId, playerIndex, playerAngle, playerVelocity, tanks) { 
+    check: function (tanks, playerIndex, playerVelocity) { 
         // playerAngle: 0 up, -180 down, -90 left, 90 right
 
-        // console.log('TODO: detect collistion.', socketId, ' playerIndex =', playerIndex);
+        // console.log('TODO: detect collistion.', ' playerIndex =', playerIndex);
         // this.checkTankAgainstTank();
         return false;
     },
@@ -10,7 +10,7 @@ module.exports = {
         // TODO: checkTankAgainstBullets()
         return false;
     },
-    checkTankAgainstTank: function (socketId, playerIndex, playerAngle, playerVelocity, tanks) {
+    checkTankAgainstTank: function (tanks, playerIndex, playerVelocity) {
         // TODO: checkTankAgainstTank()
         return false;
     }
