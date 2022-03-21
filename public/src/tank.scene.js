@@ -18,6 +18,7 @@ class TankScene extends Phaser.Scene
         this.cursors = this.input.keyboard.createCursorKeys();
 
         // list of key code : https://github.com/photonstorm/phaser/blob/v3.54.0/src/input/keyboard/keys/KeyCodes.js
+        this.keyTab = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.keyCtrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
     
@@ -101,6 +102,14 @@ class TankScene extends Phaser.Scene
         // chat enter space fix. bad fix for input not able to enter space
         if (this.keySpace.isDown) {
             input.focus();
+        }
+        if (this.keyTab.isDown) {
+            // TODO: display status and help infomation div
+            tabContainer.classList.remove("tab_off");
+            tabContainer.classList.add("tab_on");
+        } else if (this.keyTab.isUp) {
+            tabContainer.classList.remove("tab_on");
+            tabContainer.classList.add("tab_off");
         }
         // console.log('afdsa');
     }

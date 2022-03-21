@@ -3,20 +3,46 @@ body {
     background-color: #cccccc;
 }
 
+.center {
+    /* border: 5px solid #FFFF00; */
+    display: flex;
+    justify-content: center;
+    }
+
+#tab_container {
+    background-color: rgba(127,220,255,0.6);
+}
+
+#tab_container.tab_on {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    min-width: 100%;
+}
+
+#tab_container.tab_off {
+    position: fixed;
+    height: 1px;
+    width: 1px;
+    top: -10000px;
+    left: -10000px;
+}
+
 #messages_container.chat_on {
     position: fixed;
     top: 0px;
     left: 0px;
     height: 100vh;
-    min-width: 1000%;
+    min-width: 100%;
 }
 
 #messages_container.chat_off {
     position: fixed;
     height: 1px;
     width: 1px;
-    top: -100px;
-    left: -100px;
+    top: -1000px;
+    left: -1000px;
 }
 
 #messages {

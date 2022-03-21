@@ -41,9 +41,23 @@
         <div id="gamediv" style="height: 100vh;">
 
         </div>
+        <div id="tab_container" class="tab_off center">
+            <div style="position:relative; min-width: 1200px">
+                <div style="position:absolute; width: 100%; top: 10vh;">
+                    <h1 style="text-align: center;">Status</h1>
+                </div>
+                
+                <div style="position:absolute; width: 100%; top: 80vh;">
+                    <h2 style="text-align: center;">Game Control</h2>
+                    <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>UP, DOWN, LEFT, RIGHT</b>: tank direction. <b> CTRL</b>: fire.</p>
+                    <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>SPACE BAR</b>: chat.</p>
+                    <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>TAB</b>: Status and Help</p>
+                </div>
+            </div>
+        </div>
         <div id="messages_container" class="chat_off">
             <ul id="messages"></ul>
-            <form id="form" action="#" style="position: absolute; bottom: 16px; left: 8px; width: 600px">
+            <form id="form" action="#" style="position: absolute; bottom: 16px; left: 8px; width: 600px; padding-left: 8px;">
                 <input id="input" autocomplete="off" style="padding: 0 1rem; border-radius: 1rem; margin: 0.25rem; width: 350px;" />
                 <button>Send</button>
                 <span style="padding-left:50px;"></span>
@@ -94,6 +108,7 @@
         <script>
             var form = document.getElementById('form');
             var input = document.getElementById('input');
+            var tabContainer = document.getElementById('tab_container');
             var messagesContainer = document.getElementById('messages_container');
             var messages = document.getElementById('messages');
             var closeChatBtn = document.getElementById('close_chat_btn');
