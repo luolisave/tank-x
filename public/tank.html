@@ -50,7 +50,7 @@
                 <div style="position:absolute; width: 100%; top: 80vh;">
                     <h2 style="text-align: center;">Game Control</h2>
                     <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>UP, DOWN, LEFT, RIGHT</b>: tank direction. <b> CTRL</b>: fire.</p>
-                    <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>SPACE BAR</b>: chat.</p>
+                    <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>SPACE BAR</b>: chat. <b>ESC</b>: Close chat.</p>
                     <p style="font-size: larger; text-align: center; padding-top: 8px;"><b>TAB</b>: Status and Help</p>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 <input id="input" autocomplete="off" style="padding: 0 1rem; border-radius: 1rem; margin: 0.25rem; width: 350px;" />
                 <button>Send</button>
                 <span style="padding-left:50px;"></span>
-                <button id="close_chat_btn"> [x] Close Chat </button>
+                <button id="close_chat_btn">[ESC] Close</button>
             </form>
         </div>
 
@@ -106,6 +106,7 @@
 
         <!-- script for chat -->
         <script>
+            var gameDiv = document.getElementById('gamediv');
             var form = document.getElementById('form');
             var input = document.getElementById('input');
             var tabContainer = document.getElementById('tab_container');
@@ -120,6 +121,13 @@
 
             // fix inside input box, space key not able to enter space issue (phaser 3 preventDefault)
             spaceAdded = false;
+            input.addEventListener('keydown', (event)=>{
+                if (event.code === 'Escape') {
+                    closeChatBtn.focus();
+                    messagesContainer.classList.remove("chat_on");
+                    messagesContainer.classList.add("chat_off");
+                }
+            });
             input.addEventListener('keydown', (event)=>{
                 if (event.code === 'Space') {
                     if(!this.spaceAdded) {

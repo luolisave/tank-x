@@ -9,8 +9,14 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 const collisionDetection = require('./src/collision.util');
+const FACE_UP_ANGLE = 0;
+const FACE_DOWN_ANGLE = -180;
+const FACE_LEFT_ANGLE = -90;
+const FACE_RIGHT_ANGLE = 90;
+const INTERVAL_MS = 8; // time interval in ms
+const FIRE_ONCE_N_MS = 1000; // bullet delay (fire once per n ms)
 const playerVelocity = 1;
-const bulletVelocity = 2;
+const BULLET_VELOCITY = 2; // BULLET_VELOCITY
 var tanks = [];
 
 app.use('/', express.static(path.join(__dirname, 'public')))
@@ -71,8 +77,7 @@ io.on('connection', (socket) => {
     for (var i = 0; i < tanks.length; i++) {
       if(tanks[i].id === socket.id) { // find user tank by socket id
         if(tanks[i].keyboardPress) {
-
-          // Fire bullets TODO: check time
+          // Fire bullets
           if (tanks[i].keyboardPress.ctrlIsDown) {
             if (!tanks[i].bullets) {tanks[i].bullets = [];}
             // fire once per second
@@ -80,10 +85,10 @@ io.on('connection', (socket) => {
                 tanks[i].bullets.length === 0 ||
                 (
                   tanks[i].bullets[tanks[i].bullets.length-1] &&
-                  thisTime - tanks[i].bullets[tanks[i].bullets.length-1].timeOfFire > 1000
+                  thisTime - tanks[i].bullets[tanks[i].bullets.length-1].timeOfFire > FIRE_ONCE_N_MS
                 )
             ) {
-              console.log(' fire ', tanks[i].bullets.length + 1 , ' times.');
+              // console.log(' fire ', tanks[i].bullets.length + 1 , ' times.');
               // TODO: 1. move bullets, 2. collision detection, explition, kill count.
               tanks[i].bullets.push({
                 timeOfFire: thisTime,
@@ -92,28 +97,57 @@ io.on('connection', (socket) => {
                 angle: tanks[i].angle,
               });
             }
-            
           }
+
+          // bullets fly away delta
+          if (tanks[i].bullets && tanks[i].bullets.length) {
+            for (var j = 0; j < tanks[i].bullets.length; j++) {
+              var bullet = tanks[i].bullets[j];
+              ////// bullet
+              if (bullet.angle === FACE_UP_ANGLE) {
+                bullet.y = bullet.y - BULLET_VELOCITY;
+              }
+              if (bullet.angle === FACE_DOWN_ANGLE) {
+                bullet.y = bullet.y + BULLET_VELOCITY;
+              }
+              if (bullet.angle === FACE_LEFT_ANGLE) {
+                bullet.x = bullet.x - BULLET_VELOCITY;
+              }
+              if (bullet.angle === FACE_RIGHT_ANGLE) {
+                bullet.x = bullet.x + BULLET_VELOCITY;
+              }
+              
+              // remove bullets if out of screen
+              if (
+                  bullet.x < -16 || bullet.x > 1300 ||
+                  bullet.y < -16 || bullet.y > 740
+                ) {
+                tanks[i].bullets.splice(j, 1);
+                // console.log('remove bullets from array. bullet at (', bullet.x, ',', bullet.y, ')');
+              }
+            }
+          }
+          
 
           // Drive direction
           if (tanks[i].keyboardPress.upIsDown) {
-            tanks[i].angle = 0;
-            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) {
+            tanks[i].angle = FACE_UP_ANGLE;
+            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) { // TODO: checkTankAgainstTank always return true at this moment. 
               tanks[i].y = tanks[i].y - playerVelocity;
             }
           } else if (tanks[i].keyboardPress.downIsDown) {
-            tanks[i].angle = -180;
-            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) {
+            tanks[i].angle = FACE_DOWN_ANGLE;
+            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) { // TODO: checkTankAgainstTank always return true at this moment.
               tanks[i].y = tanks[i].y + playerVelocity;
             }
           } else if (tanks[i].keyboardPress.leftIsDown) {
-            tanks[i].angle = -90;
-            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) {
+            tanks[i].angle = FACE_LEFT_ANGLE;
+            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) { // TODO: checkTankAgainstTank always return true at this moment.
               tanks[i].x = tanks[i].x - playerVelocity;
             }
           } else if (tanks[i].keyboardPress.rightIsDown) {
-            tanks[i].angle = 90;
-            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) {
+            tanks[i].angle = FACE_RIGHT_ANGLE;
+            if(!collisionDetection.checkTankAgainstTank(tanks, i, playerVelocity)) { // TODO: checkTankAgainstTank always return true at this moment.
               tanks[i].x = tanks[i].x + playerVelocity;
             }
           }
@@ -136,7 +170,7 @@ io.on('connection', (socket) => {
       info: 'success',
       tanks: tanks
     });
-  }, 8); 
+  }, INTERVAL_MS); 
   
 
   // broadcast to all connected sockets
