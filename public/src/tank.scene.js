@@ -50,9 +50,6 @@ class TankScene extends Phaser.Scene
 
     updateDirect(time, delta)
     {
-        var MS_PER_FRAME_60FPS = 16.6667;
-        var moveSpeed = 1 * (delta / MS_PER_FRAME_60FPS); // !!! delta can change due to monitor refresh rate!!!
-        
         var keyboardPress = {
             leftIsDown: false,
             rightIsDown: false,
